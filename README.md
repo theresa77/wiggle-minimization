@@ -151,6 +151,10 @@ Run `web-frontend` with the following command in the main directory of subprojec
 
 `mvn spring-boot:run`
 
+The web interface can be accessed with the following url:
+    
+    http://localhost:8080/#/
+
 Credentials for web socket:
 
     - Username: user
