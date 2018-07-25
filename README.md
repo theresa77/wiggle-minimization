@@ -27,6 +27,8 @@ The subproject can be build separately with the following command in the main di
 
 The ILP optimizations can be started by executing the created JAR file *ilp-wiggle-minimisation-exec.jar*. The JAR takes several input parameter, which are necessary for initializing a concrete GRBModel and concrete objective function.
 
+The project was tested with Gurobi Version 7.0 and Gurobi Version 7.0.2. You might want to set your version in the pom.xml file of the subproject.
+
 The following parameters can be added to the run command:
 
 - `-Djava.library.path=/absolut/path/to/gurobi/lib`: [required] JVM command to use your native JNI gurobi library, the concrete path has to be replaced by the absolute path to the location of gurobi.jar at your local system
@@ -174,13 +176,13 @@ The frontend supports storyline visualizations with up to 14 characters.
 
 [4]  Fahiem Bacchus. Maxhs v3. 0 in the 2017 maxsat evaluation. MaxSAT Evaluation 2017, page 8.
 
-[5]  Jeremias Berg, Tuukka Korhonen, and Matti Järvisalo. Loandra: Pmres extended with preprocessing entering maxsat evaluation 2017. MaxSAT Evaluation 2017, page 13.
+[5]  Jeremias Berg, Tuukka Korhonen, and Matti Järvisalo. Loandra: Pmres extended with preprocessing entering maxsat evaluation 2017. MaxSAT Evaluation 2017, page 13.
 
 [6]  Jessica Davies and Fahiem Bacchus. Maxhs: A fast and robust maxsat solver (accessed 2018-07-24). http://www.maxhs.org .
 
-[7]  Paul Saikko, Jeremias Berg, and Matti Järvisalo. Lmhs: a sat-ip hybrid maxsat solver. In International Conference on Theory and Applications of Satisfiability Testing, pages 539–546. Springer, 2016.
+[7]  Paul Saikko, Jeremias Berg, and Matti Järvisalo. Lmhs: a sat-ip hybrid maxsat solver. In International Conference on Theory and Applications of Satisfiability Testing, pages 539–546. Springer, 2016.
 
-[8]  Paul Saikko, Tuukka Korhonen, Jeremias Berg, and Matti Järvisalo. Lmhs in maxsat evaluation 2017. MaxSAT Evaluation 2017, page 16.
+[8]  Paul Saikko, Tuukka Korhonen, Jeremias Berg, and Matti Järvisalo. Lmhs in maxsat evaluation 2017. MaxSAT Evaluation 2017, page 16.
 
 [9]  Yuzuru Tanahashi and Kwan-Liu Ma. Design considerations for optimizing storyline visualizations: Data and resources (accessed 2018-07-24). https://old.datahub.io/dataset/vis-storyline-visualizations .
 
