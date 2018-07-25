@@ -1,0 +1,180 @@
+<div ng-cloak>
+
+    <div class="row">
+        <label for="storyline_select">Storylines</label>
+        <select class="form-control" id="storyline_select" name="storyline_select" ng-model="selectedStoryline"
+                ng-options="compressedStoryline as compressedStoryline.name for compressedStoryline in allCompressedStorylines"
+                ng-change="createBezierDiagram()" >
+        </select>
+    </div>
+    <hr>
+    <div class="row" ng-if="selectedStoryline!=undefined && selectedStoryline!=null">
+        <dl class="dl-horizontal">
+            <dt><span>Name</span></dt>
+            <dd>
+                <span>{{selectedStoryline.movieData.movieName}}</span>
+            </dd>
+            <dt><span>Time count</span></dt>
+            <dd>
+                <span>{{selectedStoryline.movieData.timeCount}}</span>
+            </dd>
+            <dt><span>Compr. time count</span></dt>
+            <dd>
+                <span>{{selectedStoryline.movieData.compressedTPCount-1}}</span>
+            </dd>
+            <dt><span>Node count</span></dt>
+            <dd>
+                <span>{{selectedStoryline.movieData.nodeCount}}</span>
+            </dd>
+            <dt><span>Meetings count</span></dt>
+            <dd>
+                <span>{{selectedStoryline.movieData.interactionSessionCount}}</span>
+            </dd>
+            <dt><span>wiggleHeightSum</span></dt>
+            <dd>
+                <span>{{selectedStoryline.wiggleHeightSum}}</span>
+            </dd>
+            <dt><span>highestWiggleHeight</span></dt>
+            <dd>
+                <span>{{selectedStoryline.highestWiggleHeight}}</span>
+            </dd>
+            <dt><span>wiggleCount</span></dt>
+            <dd>
+                <span>{{selectedStoryline.wiggleCount}}</span>
+            </dd>
+            <dt><span>crossingsCount</span></dt>
+            <dd>
+                <span>{{selectedStoryline.crossingsCount}}</span>
+            </dd>
+        </dl>
+    </div>
+
+    <div class="row" ng-if="selectedStoryline!=undefined && selectedStoryline!=null">
+        <div class="col-lg-12" >
+            <h2></h2>
+            <table class="table table-bordered" style="width: auto;">
+                <tbody>
+                <tr></tr>
+                <tr style="vertical-align: middle; text-align: center;">
+                    <td style="vertical-align: middle; text-align: center; font-weight: bold; font-size: xx-small;" width="30px" ></td>
+                    <td ng-repeat="col in selectedStoryline.storyline[0] track by $index"
+                        style="vertical-align: middle; text-align: center; font-weight: bold; font-size: xx-small;"
+                        width="30px">
+                        {{$index}}
+                    </td>
+                </tr>
+                <tr ng-repeat="row in selectedStoryline.storyline" style="vertical-align: middle; text-align: center;">
+                    <td style="vertical-align: middle; text-align: center; font-weight: bold; font-size: xx-small;" width="30px">{{$index}}</td>
+                    <td ng-repeat="col in row track by $index" style="vertical-align: middle; text-align: center; padding: 0;" width="30px">
+                        <div ng-show="col=='0'" style="font-weight: bold;color: #CF97D7;">{{col}}</div>
+                        <div ng-show="col=='1'" style="font-weight: bold;color: #FA9D00;">{{col}}</div>
+                        <div ng-show="col=='2'" style="font-weight: bold;color: #ED0026;">{{col}}</div>
+                        <div ng-show="col=='3'" style="font-weight: bold;color: #FEABB9;">{{col}}</div>
+                        <div ng-show="col=='4'" style="font-weight: bold;color: #89DBEC;">{{col}}</div>
+                        <div ng-show="col=='5'" style="font-weight: bold;color: #006884;">{{col}}</div>
+                        <div ng-show="col=='6'" style="font-weight: bold;color: #FFD08D;">{{col}}</div>
+                        <div ng-show="col=='7'" style="font-weight: bold;color: #B00051;">{{col}}</div>
+                        <div ng-show="col=='8'" style="font-weight: bold;color: #00909E;">{{col}}</div>
+                        <div ng-show="col=='9'" style="font-weight: bold;color: #91278F;">{{col}}</div>
+                        <div ng-show="col=='10'" style="font-weight: bold;color: #F68370;">{{col}}</div>
+                        <div ng-show="col=='11'" style="font-weight: bold;color: #688FAD;">{{col}}</div>
+                        <div ng-show="col=='12'" style="font-weight: bold;color: #52CCCE;">{{col}}</div>
+                        <div ng-show="col=='13'" style="font-weight: bold;color: #6E006C;">{{col}}</div>
+                        <!--<div ng-show="col!='0' && col!='1' && col!='2' && col!='3' && col!='4' && col!='5' && col!='6' && col!='7'
+                                        && col!='8' && col!='9' && col!='10' && col!='11' && col!='12' && col!='13'"
+                             style="color: white;"></div>-->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row" ng-if="selectedStoryline!=undefined && selectedStoryline!=null">
+        <div class="col-lg-12" >
+            <h2></h2>
+            <table class="table table-bordered" style="width: auto;">
+                <tbody>
+                <tr></tr>
+                <tr style="vertical-align: middle; text-align: center;">
+                    <td style="vertical-align: middle; text-align: center; font-weight: bold; font-size: xx-small;" width="30px" ></td>
+                    <td ng-repeat="col in selectedStoryline.storyline[0] track by $index"
+                        style="vertical-align: middle; text-align: center; font-weight: bold; font-size: xx-small;"
+                        width="30px">
+                        {{$index}}
+                    </td>
+                </tr>
+                <tr ng-repeat="row in selectedStoryline.storyline" style="vertical-align: middle; text-align: center;">
+                    <td style="vertical-align: middle; text-align: center; font-weight: bold; font-size: xx-small;" width="30px">{{$index}}</td>
+                    <td ng-repeat="col in row track by $index" style="vertical-align: middle; text-align: center; padding: 0;" width="30px">
+                        <div ng-show="col=='0'" style="width: 30px; height: 30px; background-color: #CF97D7;"></div>
+                        <div ng-show="col=='1'" style="width: 30px; height: 30px; background-color: #FA9D00;"></div>
+                        <div ng-show="col=='2'" style="width: 30px; height: 30px; background-color: #ED0026;"></div>
+                        <div ng-show="col=='3'" style="width: 30px; height: 30px; background-color: #FEABB9;"></div>
+                        <div ng-show="col=='4'" style="width: 30px; height: 30px; background-color: #89DBEC;"></div>
+                        <div ng-show="col=='5'" style="width: 30px; height: 30px; background-color: #006884;"></div>
+                        <div ng-show="col=='6'" style="width: 30px; height: 30px; background-color: #FFD08D;"></div>
+                        <div ng-show="col=='7'" style="width: 30px; height: 30px; background-color: #B00051;"></div>
+                        <div ng-show="col=='8'" style="width: 30px; height: 30px; background-color: #00909E;"></div>
+                        <div ng-show="col=='9'" style="width: 30px; height: 30px; background-color: #91278F;"></div>
+                        <div ng-show="col=='10'" style="width: 30px; height: 30px; background-color: #F68370;"></div>
+                        <div ng-show="col=='11'" style="width: 30px; height: 30px; background-color: #688FAD;"></div>
+                        <div ng-show="col=='12'" style="width: 30px; height: 30px; background-color: #52CCCE;"></div>
+                        <div ng-show="col=='13'" style="width: 30px; height: 30px; background-color: #6E006C;"></div>
+                        <div ng-show="col!='0' && col!='1' && col!='2' && col!='3' && col!='4' && col!='5' && col!='6' && col!='7'
+                                        && col!='8' && col!='9' && col!='10' && col!='11' && col!='12' && col!='13'"
+                             style="width: 30px; height: 30px;"></div> <!-- background-color: white; -->
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <hr ng-if="selectedStoryline!=undefined && selectedStoryline!=null">
+    <!-- shows small version of compressed storyline -->
+    <div class="row">
+        <div id="bezier-storyline">
+            <svg id="storyline"></svg>
+        </div>
+        <div id="compressed-storyline-img">
+            <canvas id="compressed-storyline-canvas" style="display:none"></canvas>
+        </div>
+    </div>
+    <br/>
+    <div class="row" ng-if="selectedStoryline!=undefined && selectedStoryline!=null">
+        <div class="col-lg-12">
+            <button type="button" class="btn btn-default" ng-click="downloadStorylineAsPNG('#storyline', '#compressed-storyline-canvas')">
+                download as png
+            </button>
+            <button type="button" class="btn btn-default" ng-click="downloadStorylineAsSVG('#storyline')">
+                download as svg
+            </button>
+        </div>
+    </div>
+
+    <hr ng-if="selectedStoryline!=undefined && selectedStoryline!=null">
+    <!-- uncompressed storyline below -->
+    <div class="row">
+        <div id="bezier-storyline-uncompressed">
+            <svg id="storyline-uncompressed"></svg>
+        </div>
+        <div id="uncompressed-storyline-img">
+            <canvas id="uncompressed-storyline-canvas" style="display:none"></canvas>
+        </div>
+    </div>
+    <br/>
+    <div class="row" ng-if="selectedStoryline!=undefined && selectedStoryline!=null">
+        <div class="col-lg-12">
+            <button type="button" class="btn btn-default" ng-click="downloadStorylineAsPNG('#storyline-uncompressed', '#uncompressed-storyline-canvas')">
+                download as png
+            </button>
+            <button type="button" class="btn btn-default" ng-click="downloadStorylineAsSVG('#storyline-uncompressed')">
+                download as svg
+            </button>
+        </div>
+    </div>
+
+    <hr ng-if="selectedStoryline!=undefined && selectedStoryline!=null">
+
+</div>
