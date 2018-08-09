@@ -167,9 +167,15 @@ public class MovieData {
                 if(interactionSession.getStartTimePoint() == this.compressedTimePoints[i]){
                     interactionSession.setCompressedStartTimePoint(i);
                 }
+
                 if(interactionSession.getEndTimePoint() == this.compressedTimePoints[i]){
                     interactionSession.setCompressedEndTimePoint(i);
+//                    for(int characterId: interactionSession.getCharacterIds()){
+//                        Character character = this.charactersMap.get(characterId);
+//                        character.addCompressedTimePoint(i);
+//                    }
                 }
+
                 if(this.compressedTimePoints[i]>=interactionSession.getStartTimePoint() && this.compressedTimePoints[i]<interactionSession.getEndTimePoint()){
                     if(this.meetingsAtCompressedTimePointsMap.containsKey(this.compressedTimePoints[i])){
                         meetingIdsList = this.meetingsAtCompressedTimePointsMap.get(this.compressedTimePoints[i]);
@@ -424,7 +430,7 @@ public class MovieData {
     }
 
     public int[] getActiveTimePointsPerCharacter(int characterId){
-        return  characterActiveTimePoints.get(characterId);
+        return characterActiveTimePoints.get(characterId);
     }
 
 
@@ -437,7 +443,7 @@ public class MovieData {
             currentMeetings = completeMeetingsAtCompressedTimePointsMap.get(timePoint);
             for(InteractionSession meeting: currentMeetings){
                 if(meeting.getStartTimePoint() == timePoint){
-                    jumpsCounter = this.minSlotCount-1; //TODO: was ist der wert dieser variable wenn es eine initial solution gibt?
+                    jumpsCounter = this.minSlotCount-1;
                     for(int i=0; i<meeting.numberOfCharacters(); i++){
                         result += jumpsCounter;
                         jumpsCounter = jumpsCounter-1;
@@ -470,23 +476,6 @@ public class MovieData {
                 +", interactionSessionCount="+interactionSessionCount
                 +", locationCount="+locationCount+"}";
     }
-
-    // currently the same as calcWorstCaseWiggleCount()
-//    public int calcWorstCaseCrossingCount(){
-//        int result = 0;
-//        List<InteractionSession> currentMeetings;
-//
-//        for(Integer timePoint: this.completeMeetingsAtCompressedTimePointsMap.keySet()){
-//            currentMeetings = completeMeetingsAtCompressedTimePointsMap.get(timePoint);
-//            for(InteractionSession meeting: currentMeetings){
-//                if(meeting.getStartTimePoint() == timePoint){
-//                    result += meeting.numberOfCharacters();
-//                }
-//            }
-//        }
-//
-//        return result;
-//    }
 
 }
 

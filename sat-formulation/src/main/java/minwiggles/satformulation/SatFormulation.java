@@ -25,6 +25,7 @@ public class SatFormulation {
     private int variableCounter;
     private boolean minNumWiggle;
 
+    private String positiveVariables = "3 11 18 25 32 39 46 53 60 67 76 84 91 98 103 107 113 120 127 134 141 148 155 162 169 176 183 190 203 210 217 223 230 238 245 250 257 264 270 277 284 291 298 305 313 320 327 334 341 348 355 359 366 373 380 388 395 401 408 415 422 429 436 443 451 458 465 472 479 486 494 500 508 514 522 529 538 545 551 558 565 572 579 582 589 596 605 613 620 629 636 643 650 654 659 671 678 685 692 699 706 713 721 728 735 736 799 800 806 827 828 834 835 836 841 918 919 920 921 922 923 939 953 967 968 988 1030 1100 1114 1163 1205 1212 1219 1226 1233 1254 1303 1304 1310 1324 1325 1352 1353 1401 1422 1430 1437 1441 1452 1459 1461 1468 1477 1486 1493 1496 1501 1506 1508 1514 1520 1529 1538 1545 1549 1554 1560 1563 1575 1577 1585 1591 1595 1599 1607 1613 1616 1625 1627 1634 1641 1648 1655 1662 1669 1676 1683 1690 1699 1705 1714 1720 1724 1732 1738 1742 1750 1756 1760 1768 1773 1782 1789 1796";
     private Map<Integer, String[][]> xVariablesPerCharacter = new HashMap<>();//key i of map for character, first index t of array for time point, second index j for slot
     private Map<Integer, String[][]> zVariablesPerCharacter = new HashMap<>();//key i of map for character, first index t of array for time point, second index j for slot
     private Map<Integer, String[]> zVariablesPerCharacterBinary = new HashMap<>();//key i of map for character, first index t of array for time point (slot not needed, because we are only interested in the number of wiggles)
@@ -50,9 +51,49 @@ public class SatFormulation {
 
         initVariables();
         createClauses();
+
+        boolean satisfiable = isPositiveVariableAssignmentSatisfiable(positiveVariables);
+        if(satisfiable){
+            System.out.println("[INFO] ------------------------------------------------------------------------ ");
+            System.out.println("[INFO] ");
+            System.out.println("[INFO] Variable Assignment is SATISFIABLE!");
+            System.out.println("[INFO] ");
+            System.out.println("[INFO] ------------------------------------------------------------------------ ");
+        } else {
+            System.exit(0);
+        }
     }
 
     private void initVariables(){
+//        PrintWriter pw = null;
+//        try {
+//            pw = new PrintWriter(new File("/Users/theresa/Desktop/Debugging/xvars.csv"));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        StringBuilder sb = new StringBuilder();
+
+//        sb.append("characterId");
+//        sb.append(';');
+//        for(int t=0; t<movieData.getCompressedTPCount(); t++){
+//            sb.append(t);
+//            if(t<movieData.getCompressedTPCount()-1){
+//                sb.append(';');
+//            }
+//        }
+//        sb.append('\n');
+//
+//        sb.append("characterId");
+//        sb.append(';');
+//        for(int t=0; t<movieData.getCompressedTimePoints().length; t++){
+//            sb.append(movieData.getCompressedTimePoints()[t]);
+//            if(t<movieData.getCompressedTPCount()-1){
+//                sb.append(';');
+//            }
+//        }
+//        sb.append('\n');
+
+
         int[] activeTimePoints;
         String[][] xVars;
 
@@ -67,8 +108,41 @@ public class SatFormulation {
                 }
             }
 
+            for(int j=0; j<movieData.getMinSlotCount(); j++){
+//                sb.append(i);
+//                sb.append(";");
+
+                for(int t=0; t<movieData.getCompressedTimePoints().length; t++){
+                    final int[] activeTP = movieData.getActiveTimePointsPerCharacter(i);
+                    final int currT = t;
+                    OptionalInt tpIndex = IntStream.range(0, activeTP.length)
+                            .filter(tIndex -> activeTP[tIndex]==currT)
+                            .findFirst();
+
+//                    if(tpIndex.isPresent()){
+//                        sb.append(xVars[tpIndex.getAsInt()][j]);
+//                    } else {
+//                        sb.append("null");
+//                    }
+//                    if(t<movieData.getCompressedTimePoints().length-1){
+//                        sb.append(";");
+//                    }
+                }
+
+//                sb.append('\n');
+            }
+
             xVariablesPerCharacter.put(i, xVars);
+
+//            sb.append('\n');
         }
+
+
+//        if(pw!=null){
+//            pw.write(sb.toString());
+//            pw.close();
+//        }
+
 
         if(minNumWiggle){
             String[] zVars;
@@ -77,7 +151,7 @@ public class SatFormulation {
                 activeTimePoints = movieData.getActiveTimePointsPerCharacter(i);
                 zVars = new String[activeTimePoints.length-1];
 
-                for(int t=0; t<activeTimePoints.length-1; t++){
+                for(int t=0; t<zVars.length; t++){
                     zVars[t] = String.valueOf(variableCounter);
                     variableCounter++;
                 }
@@ -86,13 +160,42 @@ public class SatFormulation {
             }
 
         } else {
+            
+//            try {
+//                pw = new PrintWriter(new File("/Users/theresa/Desktop/Debugging/zvars.csv"));
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//            sb = new StringBuilder();
+//
+//            sb.append("characterId");
+//            sb.append(';');
+//            for(int t=0; t<movieData.getCompressedTPCount(); t++){
+//                sb.append(t);
+//                if(t<movieData.getCompressedTPCount()-1){
+//                    sb.append(';');
+//                }
+//            }
+//            sb.append('\n');
+//
+//            sb.append("characterId");
+//            sb.append(';');
+//            for(int t=0; t<movieData.getCompressedTimePoints().length; t++){
+//                sb.append(movieData.getCompressedTimePoints()[t]);
+//                if(t<movieData.getCompressedTPCount()-1){
+//                    sb.append(';');
+//                }
+//            }
+//            sb.append('\n');
+
+
             String[][] zVars;
 
             for(int i=0; i<movieData.getNodeCount(); i++){
                 activeTimePoints = movieData.getActiveTimePointsPerCharacter(i);
                 zVars = new String[activeTimePoints.length-1][movieData.getMinSlotCount()];
 
-                for(int t=0; t<activeTimePoints.length-1; t++){
+                for(int t=0; t<zVars.length; t++){
                     for(int j=0; j<movieData.getMinSlotCount(); j++){
                         zVars[t][j] = String.valueOf(variableCounter);
                         variableCounter++;
@@ -100,8 +203,84 @@ public class SatFormulation {
                 }
 
                 zVariablesPerCharacter.put(i, zVars);
+
+
+                for(int j=0; j<movieData.getMinSlotCount(); j++){
+//                    sb.append(i);
+//                    sb.append(";");
+
+                    for(int t=0; t<movieData.getCompressedTimePoints().length; t++){
+                        final int[] activeTP = movieData.getActiveTimePointsPerCharacter(i);
+                        final int currT = t;
+                        OptionalInt tpIndex = IntStream.range(0, activeTP.length)
+                                .filter(tIndex -> activeTP[tIndex]==currT)
+                                .findFirst();
+
+//                        if(tpIndex.isPresent() && tpIndex.getAsInt()<zVars.length){
+//                            sb.append(zVars[tpIndex.getAsInt()][j]);
+//                        } else {
+//                            sb.append("null");
+//                        }
+//                        if(t<movieData.getCompressedTimePoints().length-1){
+//                            sb.append(";");
+//                        }
+                    }
+
+//                    sb.append('\n');
+                }
+//                sb.append('\n');
             }
+
+//            if(pw!=null){
+//                pw.write(sb.toString());
+//                pw.close();
+//            }
+
         }
+
+
+//        try {
+//            pw = new PrintWriter(new File("/Users/theresa/Desktop/Debugging/svars.csv"));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        sb = new StringBuilder();
+//
+//        sb.append("meetingId");
+//        sb.append(';');
+//        for(int t=0; t<movieData.getCompressedTPCount(); t++){
+//            sb.append(t);
+//            if(t<movieData.getCompressedTPCount()-1){
+//                sb.append(';');
+//            }
+//        }
+//        sb.append('\n');
+//
+//        sb.append("meetingId");
+//        sb.append(';');
+//        for(int t=0; t<movieData.getCompressedTimePoints().length; t++){
+//            sb.append(movieData.getCompressedTimePoints()[t]);
+//            if(t<movieData.getCompressedTPCount()-1){
+//                sb.append(';');
+//            }
+//        }
+//        sb.append('\n');
+//
+//
+//        PrintWriter pwSlots = null;
+//        try {
+//            pwSlots = new PrintWriter(new File("/Users/theresa/Desktop/Debugging/svarslots.csv"));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        StringBuilder sbSlots = new StringBuilder();
+//
+//        sbSlots.append("meetingId");
+//        sbSlots.append(';');
+//        sbSlots.append("sVar");
+//        sbSlots.append(';');
+//        sbSlots.append("slot");
+//        sbSlots.append('\n');
 
         int[] slotsOfsVar;
 
@@ -114,7 +293,16 @@ public class SatFormulation {
                 for(int s=0; s<(movieData.getMinSlotCount()-(meeting.numberOfCharacters()-1)); s++){
                     sVars[t][s] = String.valueOf(variableCounter);
                     slotsOfsVar = new int[meeting.numberOfCharacters()];
+
                     for(int j=0; j<meeting.numberOfCharacters(); j++) {
+
+//                        sbSlots.append(meeting.getId());
+//                        sbSlots.append(';');
+//                        sbSlots.append(sVars[t][s]);
+//                        sbSlots.append(';');
+//                        sbSlots.append(j+s);
+//                        sbSlots.append('\n');
+
                         slotsOfsVar[j] = j + s;
                     }
                     sVarSlotSet.put(variableCounter, slotsOfsVar);
@@ -122,7 +310,97 @@ public class SatFormulation {
                 }
             }
             sVariablesPerMeeting.put(meeting.getId(), sVars);
+
+
+//            for(int s=0; s<(movieData.getMinSlotCount()-(meeting.numberOfCharacters()-1)); s++){
+//                sb.append(meeting.getId());
+//                sb.append(';');
+//                for(int t=0; t<meeting.getCompressedStartTimePoint(); t++){
+//                    sb.append("null");
+//                    if(t<movieData.getCompressedTPCount()-1){
+//                        sb.append(';');
+//                    }
+//                }
+//                for(int t=0; t<(meeting.getCompressedEndTimePoint()-meeting.getCompressedStartTimePoint()); t++){
+//                    sb.append(sVars[t][s]);
+//                    if(t<movieData.getCompressedTPCount()-1){
+//                        sb.append(';');
+//                    }
+//                }
+//                for(int t=meeting.getCompressedEndTimePoint(); t<movieData.getCompressedTimePoints().length; t++){
+//                    sb.append("null");
+//                    if(t<movieData.getCompressedTPCount()-1){
+//                        sb.append(';');
+//                    }
+//                }
+//                sb.append('\n');
+//            }
+
+
         }
+
+
+//        if(pw!=null){
+//            pw.write(sb.toString());
+//            pw.close();
+//        }
+//
+//        if(pwSlots!=null){
+//            pwSlots.write(sbSlots.toString());
+//            pwSlots.close();
+//        }
+//
+//
+//        sb = new StringBuilder();
+//
+//        for(Integer character: xVariablesPerCharacter.keySet()){
+//            xVars = xVariablesPerCharacter.get(character);
+//            for(int t=0; t<xVars.length; t++){
+//                for(int j=0; j<xVars[0].length; j++){
+//                    sb.append("-");
+//                    sb.append(xVars[t][j]);
+//                    sb.append(" ");
+//                }
+//            }
+//        }
+//
+//        String[][] zVars;
+//        for(Integer character: zVariablesPerCharacter.keySet()){
+//            zVars = zVariablesPerCharacter.get(character);
+//            for(int t=0; t<zVars.length; t++){
+//                for(int j=0; j<zVars[0].length; j++){
+//                    sb.append("-");
+//                    sb.append(zVars[t][j]);
+//                    sb.append(" ");
+//                }
+//            }
+//        }
+//
+//        String[][] sVars;
+//        for(InteractionSession meeting: movieData.getInteractionSessions()){
+//            sVars = sVariablesPerMeeting.get(meeting.getId());
+//            for(int t=0; t<sVars.length; t++){
+//                for(int c=0; c<sVars[0].length; c++){
+//                    sb.append("-");
+//                    sb.append(sVars[t][c]);
+//                    sb.append(" ");
+//                }
+//            }
+//        }
+//
+//        try {
+//            pw = new PrintWriter(new File("/Users/theresa/Desktop/Debugging/negatedVariables.txt"));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println("------------------------------------------------------------");
+//        System.out.println("all Variables negated:");
+//        System.out.println(sb);
+//        System.out.println("------------------------------------------------------------");
+//        if(pw!=null){
+//            pw.write(sb.toString());
+//            pw.close();
+//        }
     }
 
     private void createClauses(){
@@ -149,7 +427,7 @@ public class SatFormulation {
         if(minNumWiggle){
             String[] zVars = zVariablesPerCharacterBinary.get(characterId); // index t for time point
 
-            for(int t=0; t<activeTimePoints.length-1; t++){
+            for(int t=0; t<zVars.length; t++){
 
                 for(int j=0; j<movieData.getMinSlotCount(); j++){
                     for(int h=0; h<movieData.getMinSlotCount(); h++){
@@ -165,12 +443,12 @@ public class SatFormulation {
         } else {
             String[][] zVars = zVariablesPerCharacter.get(characterId); // first index t for time point, second index j for slot
 
-            for(int t=0; t<activeTimePoints.length-1; t++){
+            for(int t=0; t<zVars.length; t++){
 
                 for(int j=1; j<movieData.getMinSlotCount(); j++){
                     for(int h=0; h<j; h++){
                         for(int f=0; f<(j-h); f++){
-                            clauses.add(createWiggleHeightClause(xVars[t][j], xVars[t+1][j], xVars[t+1][h], zVars[t][f]));
+                            clauses.add(createWiggleHeightClause(xVars[t][j], xVars[t + 1][j], xVars[t + 1][h], zVars[t][f]));
                         }
                     }
                 }
@@ -296,10 +574,16 @@ public class SatFormulation {
 
         for(int t=0; t<meeting.getCompressedTimePointsCount(); t++){
             for(int s=0; s<sVars[t].length; s++){
+//                if (sVars[t][s].equals("1553")) {
+//                    System.out.println("found meeting position 1553 for meeting 15");
+//                }
                 slots = sVarSlotSet.get(Integer.valueOf(sVars[t][s]));
 
                 for(int j: slots){
                     clause = createPositivMeetingClause(sVars[t][s], meeting.getCharacterIds(), meeting.getCompressedStartTimePoint()+t, j);
+                    if(clause.toString().equals("1450 -11 10 0")){
+                        System.out.println("found unsatisfiable clause");
+                    }
                     clauses.add(clause);
                 }
 
@@ -322,6 +606,9 @@ public class SatFormulation {
                                     clause = new Clause();
                                     clause.addLiteral(notMemberNegLiteral1);
                                     clause.addLiteral(new Literal(false, sVars[t][s]));
+                                    if(clause.toString().equals("1450 -11 10 0")){
+                                        System.out.println("found unsatisfiable clause");
+                                    }
                                     clauses.add(clause);
 
                                     counter = new int[meeting.numberOfCharacters()];
@@ -331,11 +618,17 @@ public class SatFormulation {
 
                                     clause = createNegatedMeetingClause(counter, sVars[t][s], meeting.getCompressedStartTimePoint()+t, slots);
                                     clause.addLiteral(notMemberPosLiteral1);
+                                    if(clause.toString().equals("1450 -11 10 0")){
+                                        System.out.println("found unsatisfiable clause");
+                                    }
                                     clauses.add(clause);
 
                                     while(incrementCounterArray(counter, meeting.numberOfCharacters()-1, meeting.getCharacterIds())){
                                         clause = createNegatedMeetingClause(counter, sVars[t][s], meeting.getCompressedStartTimePoint()+t, slots);
                                         clause.addLiteral(notMemberPosLiteral1);
+                                        if(clause.toString().equals("1450 -11 10 0")){
+                                            System.out.println("found unsatisfiable clause");
+                                        }
                                         clauses.add(clause);
                                     }
                                 }
@@ -403,7 +696,7 @@ public class SatFormulation {
         if(incrementAllowed(counter, meetingMembers[meetingMembers.length-1])){
             final int currMember = counter[currIndex];
             //first get the index of the member at the current position in the counter array
-            OptionalInt mIndex = IntStream.range(0, meetingMembers.length)
+            OptionalInt mIndex = IntStream.range(0, counter.length)
                     .filter(m -> meetingMembers[m]==currMember)
                     .findFirst();
             if(mIndex.isPresent()) {
@@ -467,10 +760,10 @@ public class SatFormulation {
 
         for(int j=0; j<slots.length; j++){
             xVars = xVariablesPerCharacter.get(counter[j]);
-            final int[] notMemActiveTP = movieData.getActiveTimePointsPerCharacter(counter[j]);
+            final int[] activeTP = movieData.getActiveTimePointsPerCharacter(counter[j]);
             final int currT = timePoint;
-            tIndex = IntStream.range(0, notMemActiveTP.length)
-                    .filter(index -> notMemActiveTP[index]==currT)
+            tIndex = IntStream.range(0, activeTP.length)
+                    .filter(index -> activeTP[index]==currT)
                     .findFirst();
             if(tIndex.isPresent()){
                 clause.addLiteral(new Literal(false, xVars[tIndex.getAsInt()][slots[j]]));
@@ -478,6 +771,7 @@ public class SatFormulation {
         }
         return clause;
     }
+
 
     private List<Clause> createNegatedMeetingClausesWithoutNotMembers(InteractionSession meeting, int[] slots, String sVar, int timePoint){
         List<Clause> clauses = new ArrayList<>();
@@ -491,7 +785,7 @@ public class SatFormulation {
         clause = createNegatedMeetingClause(counter, sVar, timePoint, slots);
         clauses.add(clause);
 
-        while(incrementCounterArray(counter, meeting.numberOfCharacters()-1, slots)){
+        while(incrementCounterArray(counter, meeting.numberOfCharacters()-1, meeting.getCharacterIds())){
             clause = createNegatedMeetingClause(counter, sVar, timePoint, slots);
             clauses.add(clause);
         }
@@ -550,7 +844,7 @@ public class SatFormulation {
 
             for(int i=0; i<movieData.getNodeCount(); i++){
                 zVars = zVariablesPerCharacterBinary.get(i);
-                for(int t=0; t<this.movieData.getActiveTimePointsPerCharacter(i).length-1; t++){
+                for(int t=0; t<zVars.length; t++){
                     clause = new Clause();
                     clause.addLiteral(new Literal(false, zVars[t]));
                     optionalZVarClauses.add(clause);
@@ -563,7 +857,7 @@ public class SatFormulation {
 
             for(int i=0; i<movieData.getNodeCount(); i++){
                 zVars = zVariablesPerCharacter.get(i);
-                for(int t=0; t<this.movieData.getActiveTimePointsPerCharacter(i).length-1; t++){
+                for(int t=0; t<zVars.length; t++){
                     for(int j=0; j<movieData.getMinSlotCount(); j++){
                         clause = new Clause();
                         clause.addLiteral(new Literal(false, zVars[t][j]));
@@ -930,6 +1224,137 @@ public class SatFormulation {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isPositiveVariableAssignmentSatisfiable(String variablesString){
+        Map<String, Boolean> variableValues = getVariableValues(variablesString);
+        //TODO: check if all hard clauses are satisfied with the variables from the string above!
+        // the string containts only positve assigned variables
+//        private Map<Integer, List<Clause>> wiggleHeightClausesPerCharacter = new HashMap<>();
+//        private Map<Integer, List<Clause>> wiggleCountClausesPerCharacter = new HashMap<>();
+//        private List<Clause> charPositionConstraintClauses = new ArrayList<>();
+//        private List<Clause> onlyOneCharPerSlotClauses = new ArrayList<>();
+//        private List<Clause> optionalZVarClauses = new ArrayList<>();
+//        private Map<Integer, List<Clause>> meetingPositionClausesMap = new HashMap<>();
+//        private List<Clause> meetingContinuePositionClauses = new ArrayList<>();
+//        private List<Clause> meetingConstraintClauses = new ArrayList<>();
+
+//        for(int i=0; i<movieData.getNodeCount(); i++){
+//            createWiggleHeightClausesForCharacter(i);
+//            createCharPositionConstraintClauses(i);
+//        }
+//        createOnlyOneCharacterPerSlotClauses();
+//
+//        for(InteractionSession m: movieData.getInteractionSessions()){
+//            createMeetingPositionVariables(m);
+//            createContinueMeetingPositionClauses(m);
+//            createMeetingConstraintClauses(m);
+//        }
+//
+//        createOptionalZVarClauses();
+
+
+        for(int i=0; i<movieData.getNodeCount(); i++){
+
+            for(Clause clause: wiggleHeightClausesPerCharacter.get(i)){
+                if(!isClauseSatisfiable(clause, variableValues)){
+                    printUnsatisfiableOutput(clause, "wiggleHeightClausesPerCharacter of character "+i);
+                    return false;
+                }
+            }
+
+        }
+
+        for(Clause clause: charPositionConstraintClauses){
+            if(!isClauseSatisfiable(clause, variableValues)){
+                printUnsatisfiableOutput(clause, "charPositionConstraintClauses");
+                return false;
+            }
+        }
+
+        for(Clause clause: onlyOneCharPerSlotClauses){
+            if(!isClauseSatisfiable(clause, variableValues)){
+                printUnsatisfiableOutput(clause, "onlyOneCharPerSlotClauses");
+                return false;
+            }
+        }
+
+//        for(Clause clause: optionalZVarClauses){
+//            if(!isClauseSatisfiable(clause, variableValues)){
+//                printUnsatisfiableOutput(clause);
+//                return false;
+//            }
+//        }
+
+        for(Integer meetingId: meetingPositionClausesMap.keySet()){
+            for(Clause clause: meetingPositionClausesMap.get(meetingId)){
+                if(!isClauseSatisfiable(clause, variableValues)){
+                    printUnsatisfiableOutput(clause, "meetingPositionClauses for meeting "+meetingId);
+                    return false;
+                }
+            }
+        }
+
+        for(Clause clause: meetingContinuePositionClauses){
+            if(!isClauseSatisfiable(clause, variableValues)){
+                printUnsatisfiableOutput(clause, "meetingContinuePositionClauses");
+                return false;
+            }
+        }
+
+        for(Clause clause: meetingConstraintClauses){
+            if(!isClauseSatisfiable(clause, variableValues)){
+                printUnsatisfiableOutput(clause, "meetingConstraintClauses");
+                return false;
+            }
+        }
+
+        // um zu überprüfen ob die Formulierung satisfiable ist muss ich für jede clause überprüfung ob sie bei der aktuellen
+        // variablenbelegung true ergibt
+        // ich habe hier nur die liste an positiven variablen, alle anderen werden initial mit false belegt
+        // d.h. für jede Clause schaue ich zuerst, ob sie mit der liste der positiv belegten variablen bereits erfüllt ist
+        // ist sie das nicht, muss ich eine variable in der Clause finden die nicht in der positv-Liste enthalten ist
+        // und in der Clause negiert ist
+        // um nicht 2 mal zu iterieren, kann ich gleich nur einmal für jede Clause die Liste der positiven Variablen durchgehen
+        // und 2 Listen an variablen erstellen:
+        // 1. Liste der in der Clause enthaltenen Variablen die auch in der positiven Liste sind,
+        // 2. eine Liste der Variablen die in der Clause enthalten sind, in der positiv-Liste aber nicht
+        // d.h. sobald ich nur eine Clause finde die nicht satisfiable ist, ist die ganze solution nicht satisfiable
+        // achtung: nur die hard clauses berücksichtigen
+
+        return true;
+    }
+
+    private boolean isClauseSatisfiable(Clause clause, Map<String, Boolean> positiveVariables){
+//        List<Literal> positiveVariablesInClause = new LinkedList<>();
+//        List<Literal> negativeVariablesInClause = new LinkedList<>();
+        boolean varInClause;
+
+        for(Literal clauseLiteral : clause.getLiteralList()){
+            varInClause = false;
+            for(String positiveVarName: positiveVariables.keySet()){
+                if(clauseLiteral.getVarName().equals(positiveVarName) && clauseLiteral.getLeadingSign()==true){
+                    return true;
+                } else if(clauseLiteral.getVarName().equals(positiveVarName)) {
+                    varInClause = true;
+                }
+            }
+            if(!varInClause && clauseLiteral.getLeadingSign()==false){
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void printUnsatisfiableOutput(Clause clause, String belongsToList){
+        System.out.println("[FAILURE] ------------------------------------------------------------------------ ");
+        System.out.println("[FAILURE] ");
+        System.out.println("[FAILURE] UNSATISFIABLE");
+        System.out.println("[FAILURE] unsatisfiable clause: "+clause.toString());
+        System.out.println("[FAILURE] belongs to set of clauses: "+belongsToList);
+        System.out.println("[FAILURE] ");
+        System.out.println("[FAILURE] ------------------------------------------------------------------------ ");
     }
 
     private Map<String, Boolean> getVariableValues(String variablesString){

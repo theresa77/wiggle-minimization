@@ -91,10 +91,10 @@ public class SatMain {
             System.out.println();
         } else {
 
-        MovieDataParser parser = new MovieDataParser();
-        File movieDataPath = new File(movieDataFile);
-        MovieData movieData = parser.parse(movieDataPath.getAbsolutePath(), movieName);
-        SatFormulation satFormulation = new SatFormulation(movieName, movieData, binary);
+            MovieDataParser parser = new MovieDataParser();
+            File movieDataPath = new File(movieDataFile);
+            MovieData movieData = parser.parse(movieDataPath.getAbsolutePath(), movieName);
+            SatFormulation satFormulation = new SatFormulation(movieName, movieData, binary);
 
             System.out.println("[INFO] ");
             System.out.println("[INFO] ------------------------------------------------------------------------");
@@ -112,17 +112,17 @@ public class SatMain {
             System.out.println("[INFO] ------------------------------------------------------------------------");
             System.out.println("[INFO] ");
 
-        if (movieToWCNF) {
-            createFileForSatFormulation(satFormulation, movieName);
-        } else {
+            if (movieToWCNF) {
+                createFileForSatFormulation(satFormulation, movieName);
+            } else {
 
-            File variablesFile = new File(variablesFilePath);
-            FileReader dataInput = new FileReader(variablesFile);
-            BufferedReader bufRead = new BufferedReader(dataInput);
-            String variablesString = bufRead.readLine();
+                File variablesFile = new File(variablesFilePath);
+                FileReader dataInput = new FileReader(variablesFile);
+                BufferedReader bufRead = new BufferedReader(dataInput);
+                String variablesString = bufRead.readLine();
 
-            parseResultFromMaxSatSolver(satFormulation, maxSatSolverName, variablesString);
-        }
+                parseResultFromMaxSatSolver(satFormulation, maxSatSolverName, variablesString);
+            }
 
         }
 

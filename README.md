@@ -132,7 +132,7 @@ Run command to create a WCNF file for a movie data file from the main directory 
 
 `java -jar sat-formulation/target/sat-wiggle-minimisation-jar-with-dependencies.jar movieToWCNF movieName=Inception movieDataFile=path/to/movie/data/Inception_interaction_sessions.txt binary=true`
 
-Run command to create a WCNF file for a movie data file from the main directory of the project:
+Run command from the main directory of the project to create a the solution files required to view the storyline visualization with subproject *web-frontend*:
 
 `java -jar sat-formulation/target/sat-wiggle-minimisation-jar-with-dependencies.jar createSolution movieName=Inception movieDataFile=path/to/movie/data/file/Inception_interaction_sessions.txt binary=true variablesFile=path/to/assigned/variables/Inception_variables.txt maxSatSolverName=<solverName>`
 
@@ -186,4 +186,4 @@ The frontend supports storyline visualizations with up to 14 characters.
 
 [9]  Yuzuru Tanahashi and Kwan-Liu Ma. Design considerations for optimizing storyline visualizations: Data and resources (accessed 2018-07-24). https://old.datahub.io/dataset/vis-storyline-visualizations .
 
-[10]  Yuzuru Tanahashi and Kwan-Liu Ma. Design considerations for optimizing story- line visualizations. IEEE Transactions on Visualization and Computer Graphics, 18(12):2679–2688, 2012.
+[10]  Yuzuru Tanahashi and Kwan-Liu Ma. Design considerations for optimizing storyline visualizations. IEEE Transactions on Visualization and Computer Graphics, 18(12):2679–2688, 2012.
