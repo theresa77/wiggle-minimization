@@ -63,7 +63,7 @@ public class MessageController {
                 String[] pathArray = path.toString().split("/");
 
                 if(pathArray.length>=3){
-                    if(pathArray[2].contains("solCount")){
+                    if(pathArray[2].contains("solCount") || pathArray[2].contains("-obj_")){
                         if(directoriesMap.containsKey(pathArray[1])){
                             filesMap = directoriesMap.get(pathArray[1]);
                         } else {
