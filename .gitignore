@@ -60,6 +60,8 @@ storyline-visualisation/src/main/results/
 storyline-visualisation/src/main/sat/
 Doc/Storyline-Visualisation/out/
 
+*.iml
+
 *.aux
 *.glo
 *.idx
@@ -99,3 +101,5 @@ basic-storyline/src/main/resources/log
 basic-storyline/src/main/resources/initial_visualizations
 basic-storyline/src/main/resources/sat
 basic-storyline/src/main/resources/movie_data
+
+web-frontend/results/
