@@ -1,0 +1,58 @@
+{
+  "version": "0.0.0",
+  "name": "storyline-visualisation",
+  "dependencies": {
+    "angular": "1.5.2",
+    "angular-aria": "1.5.2",
+    "angular-bootstrap": "1.2.5",
+    "angular-i18n": "1.5.2",
+    "angular-loading-bar": "0.9.0",
+    "angular-resource": "1.5.2",
+    "angular-route": "1.5.8",
+    "angular-sanitize": "1.5.2",
+    "angular-translate": "2.11.0",
+    "bootstrap": "3.3.6",
+    "jquery": "2.2.2",
+    "json3": "3.3.2",
+    "modernizr": "3.3.1",
+    "sockjs-client": "^1.1.1",
+    "stomp-websocket": "^2.3.4",
+    "angular-socket-io": "^0.7.0",
+    "d3": "^4.8.0",
+    "nvd3": "^1.8.5",
+    "angularjs-nvd3-directives": "^0.0.7"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.5.2",
+    "angular-scenario": "1.5.2"
+  },
+  "overrides": {
+    "angular": {
+      "dependencies": {
+        "jquery": "2.2.2"
+      }
+    },
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.js",
+        "dist/css/bootstrap.css",
+        "less/bootstrap.less"
+      ]
+    },
+    "messageformat": {
+      "main": [
+        "messageformat.js",
+        "locale/de.js",
+        "locale/en.js"
+      ]
+    }
+  },
+  "resolutions": {
+    "angular": "1.5.2",
+    "angular-cookies": "1.5.2",
+    "angular-bootstrap": "1.2.5",
+    "jquery": "2.2.2",
+    "d3": "^4.8.0",
+    "nvd3": "^1.8.5"
+  }
+}

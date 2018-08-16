@@ -149,6 +149,10 @@ The subproject can be build separately with the following command in the main di
 
 `mvn clean install`
 
+Before the first run of the subproject the dependencies of the frontend have to be installed using `bower` (version 1.8.4) with the following command in the main directory of subproject *web-frontend*:
+
+`bower install`
+
 Run `web-frontend` with the following command in the main directory of subproject *web-frontend*:
 
 `mvn spring-boot:run`
